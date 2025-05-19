@@ -1,4 +1,3 @@
-# meal_tracking/serializers.py
 from rest_framework import serializers
 from app.models import Ingredient, Unit, Meal, Category, MealIngredient
 
@@ -51,7 +50,7 @@ class MealSerializer(serializers.ModelSerializer):
         instance.is_active = validated_data.get('is_active', instance.is_active)
         instance.save()
 
-        # Update or create meal ingredients
+
         instance.ingredients.all().delete()
         for ingredient_data in ingredients_data:
             MealIngredient.objects.create(meal=instance, **ingredient_data)
