@@ -1,5 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+
+
+class Role(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Unit(models.Model):
     name = models.CharField(max_length=255)
@@ -30,7 +38,7 @@ class Meal(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     ingredients = models.ManyToManyField(Ingredient, through='MealIngredient')
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     is_active = models.BooleanField(default=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -45,7 +53,7 @@ class MealIngredient(models.Model):
     quantity_required = models.FloatField()
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, null=True)
     portion_yield_factor = models.FloatField(null=True, blank=True)
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     is_active = models.BooleanField(default=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
